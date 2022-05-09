@@ -212,7 +212,7 @@ app.post('/user', async(req, res)=>{
             const walletPath = path.join(process.cwd(), 'wallet');
             const wallet = new FileSystemWallet(walletPath);
             console.log(`Wallet path: ${walletPath}`);
-  
+
             // Check to see if we've already enrolled the admin user.
             const adminExists = await wallet.exists('admin');
             if (!adminExists) {
@@ -222,12 +222,10 @@ app.post('/user', async(req, res)=>{
                 res.status(400).json(obj);
             }
 
-            
-
             //Enroll the admin user, and import the new identity into the wallet.
             const enrollment = await ca.enroll({ enrollmentID: id, enrollmentSecret: pw });
             const identity = X509WalletMixin.createIdentity('Org1MSP', enrollment.certificate, enrollment.key.toBytes());
-            wallet.import(id, identity);
+            await wallet.import(id, identity);
             console.log('Successfully enrolled admin user and imported it into the wallet');
             const obj = JSON.parse('{"PAYLOAD":"Successfully enrolled admin user and imported it into the wallet"}');
             res.status(200).json(obj);
@@ -239,7 +237,7 @@ app.post('/user', async(req, res)=>{
             const obj = JSON.parse(`{"ERR_MSG":"Failed to enroll admin user ${id} : ${error}"}`);
             res.status(400).json(obj);
         }
-    
+        
     }
     else if (mode == 2) // ASSET
     {
@@ -249,10 +247,9 @@ app.post('/user', async(req, res)=>{
 
         try {
             // Create a new file system based wallet for managing identities.
-            const walletPath = path.join(process.cwd(), 'wallet');
+            const walletPath = path.join(__dirname, 'wallet');
             const wallet = new FileSystemWallet(walletPath);
             console.log(`Wallet path: ${walletPath}`);
-
             // Check to see if we've already enrolled the user.
             const userExists = await wallet.exists(id);
             if (userExists) {
@@ -260,7 +257,6 @@ app.post('/user', async(req, res)=>{
                 const obj = JSON.parse(`{"ERR_MSG":"An identity for the user ${id} already exists in the wallet"}`);
                 res.status(400).json(obj);
             }
-            
             // Check to see if we've already enrolled the admin user.
             const adminExists = await wallet.exists(id);
             if (adminExists) {
@@ -268,11 +264,9 @@ app.post('/user', async(req, res)=>{
                 const obj = JSON.parse(`{"ERR_MSG":"An identity for the admin user ${id} already exists in the wallet"}`);
                 res.status(400).json(obj);
             }
-
             // Create a new gateway for connecting to our peer node.
             const gateway = new Gateway();
             await gateway.connect(ccp, { wallet, identity: 'admin', discovery: { enabled: false } });
-
             // Get the CA client object from the gateway for interacting with the CA.
             const ca = gateway.getClient().getCertificateAuthority();
             const adminIdentity = gateway.getCurrentIdentity();
