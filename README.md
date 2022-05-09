@@ -12,7 +12,7 @@ contract/simpleasset/1.1/
 ### install chaincode(contract)
 ./install.sh simpleasset 1.1 instantiate mychannel
 
-## Web Server(nodeJS)
+## Web Service(nodeJS)
 app/
 ### CA, Wallet
 node enrollAdmin.js<br>
