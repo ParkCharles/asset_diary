@@ -7,12 +7,12 @@ network/
 ### start network
 ./start.sh
 
-## Hyperledger Fabric Chaincode(Contract)
+## Hyperledger Fabric Chaincode (Smart Contract)
 contract/simpleasset/1.1/
-### install chaincode(contract)
+### install chaincode
 ./install.sh simpleasset 1.1 instantiate mychannel
 
-## Web Service(nodeJS)
+## Web Service (nodeJS)
 app/
 ### CA, Wallet
 node enrollAdmin.js<br>
