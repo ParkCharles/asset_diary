@@ -1,0 +1,74 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+
+Organizations:
+
+    - &OrdererOrg
+        Name: OrdererOrg
+        ID: OrdererMSP
+        MSPDir: crypto-config/ordererOrganizations/example.com/msp
+    - &Org1
+        Name: Org1MSP
+        ID: Org1MSP # instantiate -P 'AND ("Org1MSP.member")'
+        MSPDir: crypto-config/peerOrganizations/org1.example.com/msp
+        AnchorPeers:
+            - Host: peer0.org1.example.com
+              Port: 7051
+    - &Org2
+        Name: Org2MSP
+        ID: Org2MSP # instantiate -P 'AND ("Org2MSP.member")'
+        MSPDir: crypto-config/peerOrganizations/org2.example.com/msp
+        AnchorPeers:
+            - Host: peer0.org2.example.com
+              Port: 7051
+    - &Org3
+        Name: Org3MSP
+        ID: Org3MSP # instantiate -P 'AND ("Org3MSP.member")'
+        MSPDir: crypto-config/peerOrganizations/org3.example.com/msp
+        AnchorPeers:
+            - Host: peer0.org3.example.com
+              Port: 7051
+
+Application: &ApplicationDefaults
+
+    Organizations:
+
+Orderer: &OrdererDefaults
+
+    OrdererType: solo   # etcdraft
+    Addresses:
+        - orderer.example.com:7050
+    BatchTimeout: 2s    # BatchTimeout  # 블록이 가득차면 2초가 지나지 않아도 다음 블록이 생성
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB # BatchSize = 10tx  # 512KB ~ 99MB
+        PreferredMaxBytes: 512 KB
+    Kafka:
+        Brokers:
+            - 127.0.0.1:9092
+    Organizations:
+
+Profiles:
+
+    ThreeOrgOrdererGenesis:               # config/genesis.block
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Org1
+                    - *Org2
+                    - *Org3
+    ThreeOrgChannel:                      # config/channel.tx
+        Consortium: SampleConsortium    # config/anchor.tx ...
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+                - *Org3

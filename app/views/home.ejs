@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Datalabs Asset Diary</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    </head>
+
+    <body>
+        <div class="container">
+			<br><br>
+			<h1>
+				Welcome, <%= user.id %>!
+			</h1>
+			<form id="logout">
+				<button type="button" id="logOut" onclick="logout()">Log out</button><br><br>
+			</form>
+            <br>
+            <h1>Your first ASSET DIARY on Blockchain</h1>
+            <P> 당신의 투자일지를 여기에 기록해보세요.<br>기록은 항상 더 나은 미래를 만들어왔습니다.</P>
+
+            <br>
+            <a href="wallet_CA" class="btn btn-danger">블록체인 생성</a>
+            <br><br>
+            <a href="wallet_ASSET" class="btn btn-danger">투자항목 추가</a>
+            <br>
+
+            <br>
+            <a href="create" class="btn btn-danger">투자내역 입력</a>
+            <br><br>
+            <a href="query" class="btn btn-danger">투자내역 조회</a>
+            <br>
+        </div>
+    </body>
+
+    <script>
+		function logout() {
+                                $.ajax({
+                                    type: "get",
+                                    url: 'http://localhost:8080/logOut',
+                                    data: {},
+                                    dataType:'text',
+                                    success: function(res) {
+                                        location.reload();
+                                    }
+                                });
+                            }
+    </script>
+    
+    <style>
+		#logOut {
+                                margin-top: 2%;
+                                width: 18%;
+                                height: 32px;
+                                border-radius: 50px;
+                                background: black;
+                                color: white;
+                            }
+    </style>
+</html>

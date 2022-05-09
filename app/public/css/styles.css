@@ -1,0 +1,38 @@
+
+head {
+	color: rgb(221,221,221);
+}
+body {
+	background-color: #1c1c1e;
+	font-family: sans-serif;
+	color: rgb(221,221,221);
+	max-width: 80%;
+	margin: auto;
+}
+
+.item-title {
+	margin: auto;
+	margin-bottom: 2%;
+}
+
+.item-list {
+	width: 100%;
+	background-color: rgb(44, 44, 46);
+	border-radius: 25px;
+	border: 2px solid rgb(44, 44, 46);
+	padding: 20px; 
+	overflow: hidden;
+}
+
+.mySelf {
+	margin-top: 5%;
+	height: auto;
+}
+
+.whitePaint {
+	color: rgb(221,221,221);
+}
+
+.emptyDeco {
+	text-decoration: none;
+}
